@@ -11,8 +11,8 @@ def parse(parser):
                          help = "Door NPC indicates whether espers are still available")
     auction.add_argument("-ame", "--auction-max-espers", default = 2, type = int, choices = range(0, 3), metavar = "COUNT",
                             help = "Auction House has max %(metavar)s espers (can be less)")
-    auction.add_argument("-arso", "--auction-random-static-order", action="store_true",
-                         help="Auction items order is randomized, then items are sold in that order vs RNG")
+    auction.add_argument("-acs", "--auction-common-seed", action="store_true",
+                         help="RNG is set to a static value when entering the auction house")
 
 def process(args):
     pass
@@ -28,8 +28,8 @@ def flags(args):
         flags += " -adeh"
     if args.auction_max_espers != 2:
         flags += f" -ame {args.auction_max_espers}"
-    if args.auction_random_static_order:
-        flags += " -arso"
+    if args.auction_common_seed:
+        flags += " -acs"
 
     return flags
 
@@ -39,7 +39,7 @@ def options(args):
         ("No Chocobo/Airship", args.auction_no_chocobo_airship, "auction_no_chocobo_airship"),
         ("Door Esper Hint", args.auction_door_esper_hint, "auction_door_esper_hint"),
         ("Max Espers", args.auction_max_espers, "auction_max_espers"),
-        ("Random Static Order", args.auction_random_static_order, "auction_random_static_order"),
+        ("Common Seed", args.auction_common_seed, "auction_common_seed"),
     ]
 
 def menu(args):
