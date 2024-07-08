@@ -1,3 +1,5 @@
+import random
+
 from event.event import *
 
 # 0xcb4ecc
@@ -58,10 +60,13 @@ class AuctionHouse(Event):
     def mod(self):
         self.requirements_mod()
 
+        if self.args.auction_random_static_order:
+            self.random_static_order_mod()
+
         if self.args.auction_no_chocobo_airship:
             self.no_chocobo_airship_mod()
 
-        self.start_auction = 0xb4e5e
+        self.start_auction = 0x12B224 if self.args.auction_random_static_order else 0xb4e5e
         if self.args.auction_door_esper_hint:
             self.door_npc_mod()
 
@@ -340,6 +345,17 @@ class AuctionHouse(Event):
         space.write(
             field.Call(door_npc_hint),
         )
+
+    def random_static_order_mod(self):
+        updated_logic_address = 0x12B224
+
+        new_auction_logic_space = Reserve(updated_logic_address, updated_logic_address + 13, "reset RNG then continue auction", field.NOP())
+        src = [
+            field.SetRNGIndex(random.randint(0, 255)),
+            field.Call(0xb4e5e),
+            field.Return()
+        ]
+        new_auction_logic_space.write(src)
 
     def no_chocobo_airship_mod(self):
         space = Reserve(0xb501d, 0xb5196, "talking chocobo auction", field.NOP())
