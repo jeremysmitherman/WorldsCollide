@@ -7,5 +7,5 @@ class QuickFreeze:
             self.quick_freeze_mod()
 
     def quick_freeze_mod(self):
-        Reserve(0x24695, 0x24695, "Freeze time", 0x0F)
+        Reserve(0x24695, 0x24695, "Freeze time", 0x11)
 
